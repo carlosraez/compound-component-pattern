@@ -3,7 +3,8 @@ import { productContext } from './productCard'
 import styles from '../styles/styles.module.css'
 
 export const ProductButtons = () => { 
-    const { increaseBy , counter  } = useContext(productContext) 
+    const { increaseBy , counter  } = useContext(productContext)
+ ;
     return (
 <div className={styles.buttonsContainer}>
     <button 

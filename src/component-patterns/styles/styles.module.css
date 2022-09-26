@@ -60,3 +60,9 @@
 .buttonAdd:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+.shoppingcart {
+    position: fixed;
+    right: 10px;
+    top: 0px;
+}
