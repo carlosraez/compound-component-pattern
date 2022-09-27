@@ -1,44 +1,15 @@
-import { useState } from "react"
 import { ProductCard, ProductImage, ProductButtons , ProductTitle } from "../components"
 import styles from '../styles/styles.module.css'
 import '../styles/custom-styles.css'
-
-
-const product1 = {
-  id:'1',
-  title:'Coffe Mug - Card',
-  img: '../../../public/coffee-mug.png'
-}
-
-const product2 = {
-  id:'2',
-  title:'Coffe Mug - Meme',
-  img: '../../../public/coffee-mug2.png'
-}
+import { useShoppingCart } from "../hooks/useShoppingCart"
+import { product1, product2 } from "../data/products"
 
 const products = [product1, product2]
 
 export const ShoppingPage = () => {
 
-
-   const [shoppingCart, setShoppingCart] = useState({})
-
-   const onProductChange = ({count, product}) => {
-      setShoppingCart((oldShoppingCart) => {
-       
-        if (count === 0) {
-            const { [product.id]: toDelete, ...rest } = oldShoppingCart
-            return rest
-            
-          }
-          
-        return {
-          ...oldShoppingCart,
-          [product.id]: {...product, count}
-        }
-      })
-   }
-  
+  const { onProductChange,  shoppingCart }  =  useShoppingCart()
+   
   return (
     <div>
       <h1>Shopping Store</h1>
