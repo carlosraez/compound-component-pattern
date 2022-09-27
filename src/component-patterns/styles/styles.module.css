@@ -66,3 +66,9 @@
     right: 10px;
     top: 0px;
 }
+
+.disabled {
+    border-color: grey !important;
+    border-left: 1px solid grey !important;
+    color: grey !important;
+}

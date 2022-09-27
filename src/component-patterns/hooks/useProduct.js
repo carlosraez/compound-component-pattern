@@ -1,33 +1,39 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
-export const useProduct = ({onChange, product, value = 0}) => {
-    const [counter, setCounter] = useState(value)
-
-    const isControlled = useRef(!!onChange)
-
+export const useProduct = ({onChange, product, value = 0, initialValues}) => {
+const [counter, setCounter] = useState(initialValues?.count || value)
+     
+   
+    
     useEffect(() => {
+     if (initialValues?.count || value) return
       setCounter(value)
-    }, [value])
-
+    }, [value, initialValues?.count])
 
     const increaseBy = (value) => {
-         
-        if (isControlled.current && onChange) {
-            return  onChange({count: value, product})
+        
+        let newValue =   Math.max(counter + value, 0)
+        if (initialValues?.maxCount) {
+            newValue = Math.min(newValue, initialValues?.maxCount)
         }
-        console.log('is Controlled', isControlled.current);
 
-        const newValue =  Math.max(counter + value, 0)
-        setCounter(prev => Math.max(prev + value, 0))
-
+        setCounter(newValue)
+                 
         onChange && onChange({
             count: newValue,
             product: product
         })
     }
+
+    const reset = () => {
+        setCounter(initialValues?.count || value)
+    }
   
     return  {
         counter,
-        increaseBy
+        increaseBy,
+        reset,
+        isMaxCountReached: !! initialValues?.count && initialValues?.maxCount === counter,
+        maxCount: initialValues?.maxCount
     }
 }

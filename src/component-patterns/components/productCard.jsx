@@ -7,12 +7,13 @@ import { useProduct } from '../hooks/useProduct'
  export const productContext = createContext({})
 const { Provider } = productContext
 
-export const ProductCard = ({ children ,product, style, className, onChange, value }) => {  
-  const { counter, increaseBy } = useProduct({ 
+export const ProductCard = ({ children ,product, style, className, onChange, value, initialValues }) => {  
+  const { counter, increaseBy, maxCount, isMaxCountReached, reset } = useProduct({ 
     onChange, 
     product,
     value,
-  
+    initialValues,
+    
   })
 
   return (
@@ -20,17 +21,19 @@ export const ProductCard = ({ children ,product, style, className, onChange, val
     counter,
     increaseBy,
     product,
+    maxCount,
   }}>
     <div 
     style={ style }
     className={`${styles.productCard} ${className}`}>
-        { children }
-        {/* <ProductImage img={img} />
-        <ProductTitle title={title} />
-            <ProductButtons  
-             incresaseBy={increaseBy}  
-             counter={counter}
-             /> */}
+        { children({
+          count: counter,
+          isMaxCountReached: isMaxCountReached,
+          maxCount: initialValues?.maxCount,
+          product,
+          increaseBy,
+          reset: reset
+        }) }
      </div>
     </Provider>
   )

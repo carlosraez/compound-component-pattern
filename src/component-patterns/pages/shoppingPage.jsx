@@ -1,14 +1,8 @@
 import { ProductCard, ProductImage, ProductButtons , ProductTitle } from "../components"
-import styles from '../styles/styles.module.css'
 import '../styles/custom-styles.css'
-import { useShoppingCart } from "../hooks/useShoppingCart"
-import { product1, product2 } from "../data/products"
-
-const products = [product1, product2]
+import { product1 } from "../data/products"
 
 export const ShoppingPage = () => {
-
-  const { onProductChange,  shoppingCart }  =  useShoppingCart()
    
   return (
     <div>
@@ -19,40 +13,30 @@ export const ShoppingPage = () => {
         flexDirection: 'row',
         flexWrap: 'wrap',
       }}>
-        {
-          products.map((product, index) => (
-          <ProductCard 
-          key={product.id} 
-          product={product}
-          value={shoppingCart[product.id]?.count || 0}
-          onChange={(e) => onProductChange(e)} 
+          <ProductCard  
+          product={product1}
+          initialValues={{
+            count: 4,
+            maxCount: 10
+          }}
           >
-            <ProductImage />
-            <ProductTitle />
-            <ProductButtons />
+          {
+            ({reset, increaseBy, count, isMaxCountReached}) => (
+              <>
+                 <ProductImage />
+                 <ProductTitle />
+                 <ProductButtons />
+                 <button onClick={() => increaseBy(-2)}>-2</button>
+                 <button onClick={reset}>Reset</button>
+                 {
+                   !isMaxCountReached && <button onClick={() => increaseBy(+2)}>+2</button>
+                 }
+                
+                 <span>{count}</span>
+              </>
+            )
+          }
          </ProductCard>
-          ))
-        }
-        <div className={styles.shoppingcart}>
-        {
-          Object.entries(shoppingCart).map(([key, product]) => 
-              (
-              <ProductCard 
-              key={key}
-              // className="bg-dark" 
-              product={product} 
-              onChange={onProductChange}
-              value={product.count}
-              style={{
-              width: '100px'
-            }} >
-                <ProductImage />
-                <ProductTitle title={`${product.count}`} />
-                <ProductButtons />
-             </ProductCard>
-             ))
-        }
-        </div> 
       </div>
     </div>
   )
